@@ -72,6 +72,9 @@ CALL x86_to_68k
 XCHG AH,AL
 XCHG DH,DL
 
+; interrupts off
+CLI
+
 ; save old IO port 0-F write handler and...
 ; store 68k address as handler for IO port 0-F write
 PUSH WORD [ES:port0]
@@ -86,6 +89,9 @@ OUT 0h,AX
 ; restore old handler
 POP WORD [ES:port0+2]
 POP WORD [ES:port0]
+
+; interrupts back on
+STI
 
 ; terminate
 MOV AX,4C00h
